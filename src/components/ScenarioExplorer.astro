@@ -24,6 +24,7 @@ import ConnectionArtwork from './ConnectionArtwork.astro';
   function select(index: number, focus = false) {
     tabs.forEach((tab, i) => { tab.setAttribute('aria-selected', String(i === index)); tab.tabIndex = i === index ? 0 : -1; panels[i].hidden = i !== index; });
     if (focus) tabs[index].focus();
+    document.dispatchEvent(new CustomEvent('unified:scenario-change', { detail: panels[index] }));
   }
   panels.forEach((panel, i) => { panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', tabs[i].id); panel.tabIndex = 0; });
   tabs.forEach((tab, index) => {

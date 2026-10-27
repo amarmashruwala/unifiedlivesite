@@ -26,6 +26,7 @@ const wrap = (text: string, max: number) => text.split(' ').reduce<string[]>((li
         <marker id={`${slug}-arrow`} viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1 1L7 4L1 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
       </defs>
       {diagram.connections.map((edge, i) => <path class:list={['diagram-connector', { 'diagram-optional': edge.optional, 'diagram-return': edge.return }]} d={layout.paths[i]} marker-end={`url(#${slug}-arrow)`} marker-start={edge.bidirectional ? `url(#${slug}-arrow)` : undefined}/>)}
+      {diagram.connections.map((_, i) => <circle class="signal-packet" r="4" fill="currentColor" aria-hidden="true" style={`offset-path: path('${layout.paths[i]}'); --signal-delay: ${i * -.8}s;`}/>)}
       {diagram.nodes.map((node, i) => {
         const b = layout.boxes[i];
         const small = b.w < 160;
@@ -38,6 +39,7 @@ const wrap = (text: string, max: number) => text.split(' ').reduce<string[]>((li
         const scale = Math.min(b.w / 240, (pictureHeight - 12) / 144);
         return <g class:list={['diagram-node', `node-${node.treatment || 'standard'}`]} data-node={node.id}>
           <rect class="diagram-bounds" x={b.x} y={b.y} width={b.w} height={b.h} fill="none" stroke="none"/>
+          {kind === 'live-journey' && <ellipse class="stage-halo" cx={b.x+b.w/2} cy={b.y+pictureHeight/2} rx={b.w*.48} ry={pictureHeight*.55} aria-hidden="true"/>}
           <g transform={`translate(${b.x+(b.w-240*scale)/2} ${b.y+(pictureHeight-144*scale)/2}) scale(${scale})`}><DiagramScene scene={scenes[node.id]}/></g>
           <text x={b.x+b.w/2} y={top} text-anchor="middle" font-size={titleSize} font-weight="700">
             {titles.map((line,j) => <tspan x={b.x+b.w/2} dy={j ? titleSize+3 : 0}>{line}</tspan>)}

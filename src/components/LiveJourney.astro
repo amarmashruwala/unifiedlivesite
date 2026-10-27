@@ -1,0 +1,72 @@
+---
+import ConnectionArtwork from './ConnectionArtwork.astro';
+import MotionToggle from './MotionToggle.astro';
+import Arrow from './Arrow.astro';
+import { content, type ServiceId } from '../data/content';
+const serviceIds: ServiceId[] = ['audiovisual', 'audiovisual', 'live-production', 'streaming-distribution', 'ai-automation'];
+const stages = content.diagrams['live-journey'].nodes.map((node, index) => ({
+  ...node, service: content.services.find(service => service.id === serviceIds[index])!,
+}));
+---
+<div class="live-journey" data-live-journey>
+  <div class="journey-topline"><p>See how it all connects.</p><MotionToggle/></div>
+  <div class="journey-artwork"><ConnectionArtwork kind="live-journey" caption="none"/></div>
+  <div class="journey-player" hidden>
+    <div class="journey-readout">
+      {stages.map((stage, index) => <a class="journey-stage-link" data-stage-copy={index} href={`/services#${stage.service.id}`} hidden={index !== 0}>
+        <span><strong>{stage.title.join(' ')}</strong><span>{stage.service.headline}</span></span><Arrow/>
+      </a>)}
+    </div>
+    <div class="journey-choices" role="group" aria-label="Explore the live journey">
+      {stages.map((stage, index) => <button type="button" class="journey-choice" data-stage={index} aria-label={`Show ${stage.title.join(' ')}`} aria-pressed={index === 0 ? 'true' : 'false'}><span aria-hidden="true"></span></button>)}
+    </div>
+  </div>
+</div>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-live-journey]');
+  if (root) {
+    const choices = [...root.querySelectorAll<HTMLButtonElement>('[data-stage]')];
+    const copies = [...root.querySelectorAll<HTMLElement>('[data-stage-copy]')];
+    const nodes = [...root.querySelectorAll<SVGGElement>('[data-node]')];
+    const ids = [...new Set(nodes.map(node => node.dataset.node))];
+    let selected = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let visible = false;
+    let hover = false;
+    let focused = false;
+    let manual = false;
+    const canPlay = () => document.documentElement.dataset.motion === 'running' && visible && !document.hidden && !hover && !focused && !manual;
+    function select(index: number) {
+      selected = index;
+      root!.dataset.stage = String(index);
+      choices.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+      copies.forEach((copy, i) => { copy.hidden = i !== index; });
+      nodes.forEach(node => node.classList.toggle('is-active', node.dataset.node === ids[index]));
+    }
+    function schedule() {
+      clearTimeout(timer);
+      root!.classList.toggle('is-playing', canPlay());
+      if (canPlay()) timer = setTimeout(() => { select((selected + 1) % choices.length); schedule(); }, 3800);
+    }
+    choices.forEach((button, index) => {
+      button.addEventListener('click', () => { manual = true; select(index); schedule(); });
+      button.addEventListener('keydown', event => {
+        const next = event.key === 'ArrowRight' ? (index + 1) % choices.length : event.key === 'ArrowLeft' ? (index - 1 + choices.length) % choices.length : event.key === 'Home' ? 0 : event.key === 'End' ? choices.length - 1 : null;
+        if (next !== null) { event.preventDefault(); choices[next].focus(); choices[next].click(); }
+      });
+    });
+    root.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hover = true; schedule(); } });
+    root.addEventListener('pointerleave', () => { hover = false; schedule(); });
+    root.addEventListener('focusin', () => { focused = true; schedule(); });
+    root.addEventListener('focusout', event => { if (!root.contains(event.relatedTarget as Node)) { focused = false; schedule(); } });
+    document.addEventListener('unified:motion-change', () => { manual = false; schedule(); });
+    document.addEventListener('visibilitychange', schedule);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(entries => { visible = entries[0].isIntersecting; schedule(); }, { threshold: .1 }).observe(root);
+    } else { visible = true; }
+    select(0);
+    root.querySelector<HTMLElement>('.journey-player')!.hidden = false;
+    root.classList.add('is-enhanced');
+    schedule();
+  }
+</script>

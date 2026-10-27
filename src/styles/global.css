@@ -126,8 +126,6 @@ a:hover > .link-arrow { transform: translate(3px, -3px); }
 .hero .connection-art { margin-top: 32px; }
 .hero .connection-art figcaption { max-width: 740px; }
 .hero-capabilities { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 22px 28px; margin-top: 24px; background: var(--ice); color: var(--petrol); font-size: 15px; text-align: center; }
-.hero .signal-dot { animation: signal-arrive 1.2s var(--ease) .15s both; }
-@keyframes signal-arrive { from { opacity: .15; } to { opacity: 1; } }
 .services-section { background: var(--paper); }
 .service-index { display: grid; gap: 6px; }
 .service-index article > a { display: grid; grid-template-columns: 1.2fr 1fr 28px; gap: 40px; align-items: center; padding: 24px 20px; margin-inline: -20px; }
@@ -337,10 +335,6 @@ a:hover > .link-arrow { transform: translate(3px, -3px); }
 .footer-main .footer-ai > a { color: var(--lime); }
 .footer-signature { font-size: clamp(60px, 17.5vw, 260px); line-height: 1; font-weight: 400; letter-spacing: -.06em; margin-block: 65px 35px; white-space: nowrap; }
 .footer-bottom { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; font-size: 14px; }
-
-/* Already-visible content receives one small entrance; no gate or hidden default. */
-.arriving { animation: chapter-arrive .65s var(--ease) both; }
-@keyframes chapter-arrive { from { transform: translateY(14px); } to { transform: translateY(0); } }
 
 @media (max-width: 1350px) { .header-cta { display: none; } .header-inner { gap: 20px; } }
 @media (max-width: 1150px) {

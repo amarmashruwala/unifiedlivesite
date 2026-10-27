@@ -1,8 +1,10 @@
 ---
 import '../styles/global.css';
+import '../styles/motion.css';
 import { content } from '../data/content';
 import { routes } from '../data/routes';
 import Logo from '../components/Logo.astro';
+import MotionToggle from '../components/MotionToggle.astro';
 interface Props { title?: string; description?: string; noindex?: boolean; }
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
 const route = routes.find(r => r.path === path);
@@ -25,17 +27,11 @@ const schema = { '@context': 'https://schema.org', '@type': 'Organization', name
 </div></header>
 <main id="main" tabindex="-1"><slot/></main>
 <footer class="site-footer"><div class="container"><div class="footer-main"><div class="footer-brand"><Logo/><p>One partner.<br/>Every connection.</p><span class="footer-locations">Sydney · Mumbai</span></div><div><h2>Explore</h2><a href="/services">Services</a><a href="/industries">Industries</a><a href="/about">About us</a><a href="/faq">FAQs</a></div><div><h2>Connect</h2><a href="/global-presence">Global Presence</a><a href="/partnerships">Partnerships</a><a href="/contact">Talk to UnifiedLive ↗</a></div><div class="footer-ai"><h2>Built for connection.</h2><p>For people. And the agents<br/>helping them explore.</p><a href="/ai">AI Agent / Markdown Version <span aria-hidden="true">↗</span></a></div></div><div class="footer-signature" aria-hidden="true">unifiedlive.</div><div class="footer-bottom"><span>© {new Date().getUTCFullYear()} UnifiedLive</span><span>Strategy. Integration. Production. Connection.</span><a href="#main">Back to top ↑</a></div></div></footer>
+<div class="motion-footer"><div class="container"><MotionToggle/></div></div>
 <script>
+ import '../scripts/motion';
  const menu = document.querySelector<HTMLDetailsElement>('.mobile-nav');
  document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && menu?.open) { menu.open = false; menu.querySelector('summary')?.focus(); } });
  document.addEventListener('click', (event) => { if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) menu.open = false; });
- const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
- if (!motion.matches && 'IntersectionObserver' in window) {
-   const entrances = new IntersectionObserver(entries => {
-     for (const entry of entries) if (entry.isIntersecting) { entry.target.classList.add('arriving'); entrances.unobserve(entry.target); }
-   }, { threshold: 0.12 });
-   document.querySelectorAll('.chapter .section-heading, .chapter > .container > .connection-art, .approach-feature > div').forEach(element => entrances.observe(element));
-   motion.addEventListener('change', () => { if (motion.matches) entrances.disconnect(); });
- }
 </script>
 </body></html>

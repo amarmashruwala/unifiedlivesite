@@ -3,7 +3,7 @@
 interface Props { scene: string; }
 const { scene } = Astro.props;
 ---
-<g class="diagram-scene" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+<g class:list={['diagram-scene', `scene-${scene}`]} aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
   {scene === 'av-spaces' && <>
     <rect x="48" y="8" width="144" height="86" rx="5" fill="var(--ice)"/>
     <rect x="56" y="16" width="128" height="70" fill="var(--sky)"/>
@@ -12,11 +12,12 @@ const { scene } = Astro.props;
     <path d="M120 94v17m-25 0h50M38 136h164" stroke="var(--ice)" stroke-width="5"/>
     <rect x="108" y="91" width="24" height="27" rx="12" fill="var(--art-accent)" stroke="var(--petrol)" stroke-width="2"/>
     <path d="M102 108a18 18 0 0 0 36 0m-18 18v10" stroke="var(--art-accent)" stroke-width="4" fill="none"/>
+    {[0,1,2,3,4].map(i => <rect class="scene-meter" x={91+i*13} y="68" width="5" height="12" rx="2" fill="var(--petrol)" style={`--beat: ${i*-.17}s`}/>)}
   </>}
   {scene === 'conference' && <>
     <rect x="24" y="12" width="192" height="108" rx="8" fill="var(--ice)"/>
     <rect x="34" y="22" width="172" height="88" rx="3" fill="var(--sky)"/>
-    {[78,162].map(x => <g><circle cx={x} cy="52" r="16" fill="var(--petrol)"/><path d={`M${x-27} 100V88a27 27 0 0 1 54 0v12`} fill="var(--petrol)"/></g>)}
+    {[78,162].map((x,i) => <g class="scene-speaker" style={`--beat: ${i*-.7}s`}><circle cx={x} cy="52" r="16" fill="var(--petrol)"/><path d={`M${x-27} 100V88a27 27 0 0 1 54 0v12`} fill="var(--petrol)"/></g>)}
     <path d="M10 122h220l-14 14H24z" fill="var(--ice)"/>
     <path d="M120 38v48" stroke="var(--ice)" stroke-width="3"/>
     <circle cx="120" cy="117" r="3" fill="var(--petrol)"/>
@@ -29,14 +30,15 @@ const { scene } = Astro.props;
     <rect x="12" y="57" width="68" height="42" rx="5" fill="var(--petrol)" stroke="var(--ice)" stroke-width="3"/>
     <path d="M80 68l20-10v40L80 88" fill="var(--sky)"/><path d="M34 56v-9h27v9M44 100v35m-17 0 17-25 17 25" stroke="var(--ice)" stroke-width="4" fill="none"/>
     <path d="M105 110h111l13 27H92z" fill="var(--sky)"/>
-    {[121,147,173,199].map(x => <g><path d={`M${x} 116v14`} stroke="var(--petrol)" stroke-width="2"/><path d={`M${x-5} ${x===147 ? 120 : 126}h10`} stroke="var(--petrol)" stroke-width="4"/></g>)}
+    {[121,147,173,199].map((x,i) => <g><path d={`M${x} 116v14`} stroke="var(--petrol)" stroke-width="2"/><path class="scene-fader" style={`--beat: ${i*-.6}s`} d={`M${x-5} ${x===147 ? 120 : 126}h10`} stroke="var(--petrol)" stroke-width="4"/></g>)}
+    <circle class="scene-record" cx="202" cy="24" r="3.5" fill="var(--art-accent)"/>
   </>}
   {scene === 'ai-audience' && <>
     <path d="M24 8h144v57h-42l-24 18V65H24z" fill="var(--art-accent)"/>
     <path d="M51 49l11-28 11 28m-18-9h15m17-19h15m-7 0v28m-8 0h15" fill="none" stroke="var(--petrol)" stroke-width="4"/>
-    <path d="M116 29v15m9-22v29m9-22v15" stroke="var(--petrol)" stroke-width="3"/>
+    {[116,125,134].map((x,i) => <path class="scene-meter" style={`--beat: ${i*-.23}s`} d={`M${x} 24v24`} stroke="var(--petrol)" stroke-width="3"/>)}
     <path d="M171 38h51v39h-13v14l-18-14h-20" fill="var(--sky)"/>
-    {[185,197,209].map(x => <circle cx={x} cy="57" r="3" fill="var(--petrol)"/>)}
+    {[185,197,209].map((x,i) => <circle class="scene-response" style={`--beat: ${i*-.25}s`} cx={x} cy="57" r="3" fill="var(--petrol)"/>)}
     {[{x:50,y:94,c:'var(--ice)'},{x:120,y:101,c:'var(--sky)'},{x:190,y:104,c:'var(--ice)'}].map(p => <g><circle cx={p.x} cy={p.y} r="13" fill={p.c}/><path d={`M${p.x-23} 142v-13a23 23 0 0 1 46 0v13`} fill={p.c}/></g>)}
   </>}
   {scene === 'room' && <>
@@ -66,7 +68,7 @@ const { scene } = Astro.props;
     <path d="M100 110v18m-28 0h56" stroke="var(--ice)" stroke-width="6"/>
     <rect x="156" y="56" width="56" height="84" rx="7" fill="var(--petrol)" stroke="var(--paper)" stroke-width="3"/>
     <rect x="163" y="65" width="42" height="59" rx="2" fill="var(--art-accent)"/><path d="M177 82l16 12-16 12z" fill="var(--petrol)"/>
-    {scene === 'distribute' && <path d="M188 12q25 0 25 25m-25-13q12 0 12 13" stroke="currentColor" stroke-width="4" fill="none"/>}
+    {scene === 'distribute' && <g class="scene-broadcast"><path class="scene-wave" d="M188 24q12 0 12 13" stroke="currentColor" stroke-width="4" fill="none"/><path class="scene-wave" style="--beat: -.6s" d="M188 12q25 0 25 25" stroke="currentColor" stroke-width="4" fill="none"/></g>}
   </>}
   {scene === 'capture' && <>
     <path d="M77 101v33m-19 0 19-33 19 33" stroke="currentColor" stroke-width="5" fill="none"/>
