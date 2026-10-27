@@ -1,0 +1,55 @@
+---
+import { content, type DiagramKind } from '../data/content';
+import { diagramLayouts, roomsOverview } from '../lib/diagram-layouts';
+import DiagramScene from './DiagramScene.astro';
+interface Props { kind?: DiagramKind; caption?: 'full' | 'title' | 'none'; compact?: boolean; }
+const { kind = 'rooms', caption = 'full', compact = false } = Astro.props;
+const diagram = content.diagrams[kind];
+const instance = `${kind}-${crypto.randomUUID()}`;
+const scenes: Record<string, string> = { venue: 'room', remote: 'remote', integration: 'unified', online: 'reach', capture: 'capture', production: 'stage', distribution: 'distribute', audiences: 'people', live: 'stage', audience: 'people', interaction: 'conversation', library: 'library', prepare: 'prepare', reuse: 'reuse' };
+Object.assign(scenes, { 'av-spaces': 'av-spaces', conferencing: 'conference', 'live-production': 'live-studio', multiplatform: 'distribute', 'ai-engagement': 'ai-audience' });
+const wrap = (text: string, max: number) => text.split(' ').reduce<string[]>((lines, word) => {
+  const last = lines.length - 1;
+  if (last >= 0 && `${lines[last]} ${word}`.length <= max) lines[last] += ` ${word}`;
+  else lines.push(word);
+  return lines;
+}, []);
+---
+<figure class:list={['connection-art', `art-${kind}`]} data-diagram={kind}>
+  {(['wide', 'narrow'] as const).map(variant => {
+    const layout = compact && kind === 'rooms' ? roomsOverview[variant] : diagramLayouts[kind][variant];
+    const slug = `${instance}-${variant}`;
+    return <svg class={`diagram-${variant}`} viewBox={`0 0 ${layout.width} ${layout.height}`} fill="none" role="img" aria-labelledby={`${slug}-title ${slug}-desc`}>
+      <title id={`${slug}-title`}>{diagram.title}</title>
+      <desc id={`${slug}-desc`}>{diagram.summary} {diagram.connections.map(e => `${diagram.nodes.find(n => n.id === e.from)!.title.join(' ')} ${e.bidirectional ? 'exchanges with' : 'connects to'} ${diagram.nodes.find(n => n.id === e.to)!.title.join(' ')}: ${e.label}.`).join(' ')}</desc>
+      <defs>
+        <marker id={`${slug}-arrow`} viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto-start-reverse" markerUnits="userSpaceOnUse"><path d="M1 1L7 4L1 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker>
+      </defs>
+      {diagram.connections.map((edge, i) => <path class:list={['diagram-connector', { 'diagram-optional': edge.optional, 'diagram-return': edge.return }]} d={layout.paths[i]} marker-end={`url(#${slug}-arrow)`} marker-start={edge.bidirectional ? `url(#${slug}-arrow)` : undefined}/>)}
+      {diagram.nodes.map((node, i) => {
+        const b = layout.boxes[i];
+        const small = b.w < 160;
+        const titleSize = small ? 16 : 20;
+        const detailSize = small ? 13 : variant === 'wide' ? 16 : 14;
+        const titles = wrap(node.title.join(' '), small ? 14 : Math.floor((b.w - 16) / 11));
+        const details = wrap(node.detail.join(' '), Math.floor((b.w - 16) / (detailSize * .52)));
+        const pictureHeight = b.h - (kind === 'live-journey' ? 136 : small ? 96 : 104);
+        const top = b.y + pictureHeight + titleSize;
+        const scale = Math.min(b.w / 240, (pictureHeight - 12) / 144);
+        return <g class:list={['diagram-node', `node-${node.treatment || 'standard'}`]} data-node={node.id}>
+          <rect class="diagram-bounds" x={b.x} y={b.y} width={b.w} height={b.h} fill="none" stroke="none"/>
+          <g transform={`translate(${b.x+(b.w-240*scale)/2} ${b.y+(pictureHeight-144*scale)/2}) scale(${scale})`}><DiagramScene scene={scenes[node.id]}/></g>
+          <text x={b.x+b.w/2} y={top} text-anchor="middle" font-size={titleSize} font-weight="700">
+            {titles.map((line,j) => <tspan x={b.x+b.w/2} dy={j ? titleSize+3 : 0}>{line}</tspan>)}
+          </text>
+          <text x={b.x+b.w/2} y={top+(titles.length-1)*(titleSize+3)+detailSize+14} text-anchor="middle" font-size={detailSize}>
+            {details.map((line,j) => <tspan x={b.x+b.w/2} dy={j ? detailSize+4 : 0}>{line}</tspan>)}
+          </text>
+        </g>;
+      })}
+      {kind === 'rooms' && <circle class="signal-dot" cx={variant === 'wide' ? (compact ? 728 : 668) : 160} cy={variant === 'wide' ? (compact ? 112 : 180) : (compact ? 336 : 450)} r="4" fill="currentColor"/>}
+      {kind === 'live-journey' && <circle class="signal-dot" cx={variant === 'wide' ? 724 : 160} cy={variant === 'wide' ? 112 : 520} r="4" fill="var(--lime)"/>}
+    </svg>;
+  })}
+  {caption !== 'none' && <figcaption><strong>{diagram.title}</strong>{caption === 'full' && <><span>{diagram.summary}</span>{kind === 'rooms' && <small class="diagram-key"><span aria-hidden="true">↔</span> Two-way conversation <span class="dash-key" aria-hidden="true"></span> Multiplatform streaming</small>}</>}</figcaption>}
+</figure>

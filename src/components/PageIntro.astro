@@ -1,0 +1,6 @@
+---
+import Arrow from './Arrow.astro';
+interface Props { title: string; description: string; action?: { label: string; href: string }; }
+const { title, description, action } = Astro.props;
+---
+<section class:list={['page-intro', { 'page-intro-action': action }]}><div class="container"><h1>{title}</h1><div class="intro-copy"><p class="intro-description">{description}</p>{action && <a class="button primary" href={action.href}>{action.label}<Arrow/></a>}</div></div></section>

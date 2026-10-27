@@ -1,0 +1,38 @@
+---
+import { content } from '../data/content';
+import ConnectionArtwork from './ConnectionArtwork.astro';
+---
+<section class="chapter explorer-section" id="scenarios" aria-labelledby="explorer-heading">
+  <div class="container">
+    <div class="section-heading"><h2 id="explorer-heading">What are you<br/>connecting?</h2><p>Example configurations.<br/>Different starting points. Connected capabilities.</p></div>
+    <div class="scenario-tabs" role="tablist" aria-label="Example configurations" hidden>
+      {content.scenarios.map(s => <button type="button" role="tab" id={`tab-${s.id}`} aria-controls={`scenario-${s.id}`} aria-selected="false" tabindex="-1">{s.title}</button>)}
+    </div>
+    <div class="scenario-panels">
+      {content.scenarios.map((s, i) => <section class="scenario-panel" id={`scenario-${s.id}`} aria-labelledby={`scenario-title-${s.id}`}>
+        <div class="scenario-copy"><h3 id={`scenario-title-${s.id}`}>{s.title}</h3><p>{s.summary}</p><ul class="scenario-services">{s.serviceIds.map(id => { const service = content.services.find(item => item.id === id)!; return <li><a href={`/services#${service.id}`}>{service.name}</a></li>; })}</ul><a class="button dark" href={`/contact?service=${encodeURIComponent(s.contactInterest)}`}>Explore this enquiry</a></div>
+        <ConnectionArtwork kind={i === 0 ? 'rooms' : i === 1 ? 'production' : 'workflow'} compact caption="none"/>
+      </section>)}
+    </div>
+  </div>
+</section>
+<script>
+  const root = document.querySelector<HTMLElement>('#scenarios')!;
+  const tablist = root.querySelector<HTMLElement>('[role="tablist"]')!;
+  const tabs = [...tablist.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+  const panels = [...root.querySelectorAll<HTMLElement>('.scenario-panel')];
+  function select(index: number, focus = false) {
+    tabs.forEach((tab, i) => { tab.setAttribute('aria-selected', String(i === index)); tab.tabIndex = i === index ? 0 : -1; panels[i].hidden = i !== index; });
+    if (focus) tabs[index].focus();
+  }
+  panels.forEach((panel, i) => { panel.setAttribute('role', 'tabpanel'); panel.setAttribute('aria-labelledby', tabs[i].id); panel.tabIndex = 0; });
+  tabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => select(index));
+    tab.addEventListener('keydown', event => {
+      const next = event.key === 'ArrowRight' ? (index + 1) % tabs.length : event.key === 'ArrowLeft' ? (index - 1 + tabs.length) % tabs.length : event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : null;
+      if (next !== null) { event.preventDefault(); select(next, true); }
+    });
+  });
+  select(0);
+  tablist.hidden = false;
+</script>

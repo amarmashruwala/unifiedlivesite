@@ -1,0 +1,48 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ConnectionArtwork from '../components/ConnectionArtwork.astro';
+import ServiceCards from '../components/ServiceCards.astro';
+import ScenarioExplorer from '../components/ScenarioExplorer.astro';
+import CTA from '../components/CTA.astro';
+import Arrow from '../components/Arrow.astro';
+import { content as c } from '../data/content';
+const featured = ['Corporate Communications', 'Events and Conferences', 'Education', 'Content Creators'].map(name => c.industries.find(i => i.name === name)!);
+const [heroStart, heroEnd] = c.tagline.split(' AI-Powered ');
+const questions = [c.faqs[1], c.faqs[4], c.faqs[9]];
+---
+<Layout>
+  <section class="hero chapter">
+    <div class="container">
+      <h1>{heroStart}<br class="hero-break"/>{' AI-Powered '}{heroEnd}</h1>
+      <div class="hero-support"><h2>{c.heroDescription}</h2><div class="hero-actions"><a class="button primary" href="/contact">Start a Project<Arrow/></a><a class="text-link" href="#scenarios">Find your starting point</a></div></div>
+      <div class="hero-story"><ConnectionArtwork kind="live-journey" caption="none"/></div>
+      <div class="hero-capabilities"><span>AV & video conferencing</span><span>Live production & broadcast</span><span>Streaming & AI-powered engagement</span></div>
+    </div>
+  </section>
+  <ScenarioExplorer/>
+  <section class="chapter services-section"><div class="container">
+    <div class="section-heading"><h2>Every part<br/>of live.</h2><div><p>{c.secondaryHeadline}.</p><a class="text-link" href="/services">Explore all services</a></div></div>
+    <ServiceCards/>
+  </div></section>
+  <section class="chapter journey-section"><div class="container">
+    <div class="section-heading"><h2>One connected<br/>journey.</h2><p>Great live experiences start well before “go live”—and keep working long after.</p></div>
+    <ConnectionArtwork kind="production" caption="none"/>
+    <ol class="journey-steps">{[['Strategy & ideation','Start with your objective. Design the right approach.'],['Integration & production','Connect your systems. Bring your content to life.'],['Distribution & storage','Reach your audiences. Keep your content ready.'],['Automation & engagement','Invite participation. Make every workflow count.']].map(([title,description]) => <li><h3>{title}</h3><p>{description}</p></li>)}</ol>
+  </div></section>
+  <section class="chapter industries-section"><div class="container">
+    <div class="section-heading"><h2>Your world,<br/>connected.</h2><p>For businesses, creators, and public organizations. Built around the people you need to reach.</p></div>
+    <div class="industry-market-grid"><div><div class="industry-preview">{featured.map(industry => <a href={`/industries#${industry.name.toLowerCase().replaceAll(' ','-')}`}><h3>{industry.name}</h3><p>{industry.useCases[0]}</p><Arrow/></a>)}</div><a class="text-link industry-index-link" href="/industries">Explore all industries</a></div>
+    <div class="industry-art"><h3>Turn viewers into<br/>participants.</h3><ConnectionArtwork kind="audience" caption="none"/><p>Live polls, Q&A, moderated chat, and voice agents bring your audience into the experience.</p></div></div>
+  </div></section>
+  <section class="chapter approach-section"><div class="container approach-feature">
+    <div><h2>One partner.<br/>The full picture.</h2><p>{c.about.intro}</p><ul class="approach-benefits">{[c.about.reasons[1], c.about.reasons[2], c.about.reasons[3]].map(reason => <li>{reason}</li>)}</ul><a class="text-link" href="/about">Meet your delivery partner</a></div>
+    <div class="content-story"><h3>Make more of<br/>every live moment.</h3><ConnectionArtwork kind="workflow" caption="none"/><p>{c.services.find(s => s.id === 'content-workflow')!.outcome}</p><a class="text-link" href="/services#content-workflow">Explore content workflows</a></div>
+  </div></section>
+  <section class="section home-faq"><div class="container home-faq-grid"><div><h2>Before you<br/>go live.</h2><p>A few answers to help you take the next step.</p><a class="text-link" href="/faq">Explore all FAQs</a></div><div class="faq-list">{questions.map(f => <details><summary>{f.question}<span aria-hidden="true">+</span></summary><p>{f.answer}</p></details>)}</div></div></section>
+  <section class="chapter presence-preview"><div class="container">
+    <div class="section-heading"><h2>Two cities.<br/>One vision.</h2><p>Our presence in Sydney and Mumbai connects local understanding with an integrated approach to media technology.</p></div>
+    <div class="city-pair">{c.locations.map(l => <a href="/global-presence"><h3>{l.city}</h3><span>{l.country}</span></a>)}</div>
+    <div class="partnership-strip"><h3>Better, together.</h3><p>{c.partnerships.description}</p><a class="text-link" href="/partnerships">Explore partnerships</a></div>
+  </div></section>
+  <CTA/>
+</Layout>

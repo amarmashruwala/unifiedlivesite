@@ -1,0 +1,17 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import ConnectionArtwork from '../components/ConnectionArtwork.astro';
+import CTA from '../components/CTA.astro';
+import { content as c } from '../data/content';
+const artwork = { audiovisual: 'rooms', 'live-production': 'production', 'ai-automation': 'audience', 'content-workflow': 'workflow' } as const;
+---
+<Layout>
+<PageIntro title="Services, connected." description="From audiovisual integration and video conferencing to production, distribution, and engagement. The right capabilities, connected around your objective." action={{label:'Find your service',href:'#service-index'}}/>
+<nav id="service-index" class="container section service-jump" aria-label="Service sections">{c.services.map(s => <a href={`#${s.id}`}>{s.name}</a>)}</nav>
+{c.services.map(s => <section id={s.id} class="service-band"><div class="container service-detail">
+  <div class="service-detail-heading"><h2>{s.name}</h2><p>{s.description}</p><a class="text-link" href={`/contact?service=${encodeURIComponent(s.name)}`}>Talk about this service</a>{s.id in artwork && <ConnectionArtwork kind={artwork[s.id as keyof typeof artwork]} compact caption="title"/>}</div>
+  <div><div class="outcome"><h3>{s.headline}</h3><p>{s.outcome}</p></div><h3 class="list-heading">What we can help with</h3><ul class="capability-list">{s.capabilities.map(cap => <li>{cap}</li>)}</ul></div>
+</div></section>)}
+<CTA/>
+</Layout>

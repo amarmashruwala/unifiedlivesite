@@ -1,0 +1,13 @@
+---
+interface Props { kind?: number; }
+const { kind = 0 } = Astro.props;
+const paths = [
+ 'M4 4h6v6H4z M14 14h6v6h-6z M14 4h6v6h-6z M4 14h6v6H4z M10 7h4 M7 10v4 M17 10v4 M10 17h4',
+ 'M3 5h18v12H3z M8 21h8 M12 17v4 M7 10h2 M11 10h2 M15 10h2',
+ 'M3 6h12v12H3z M15 10l6-3v10l-6-3 M7 10l4 2-4 2z',
+ 'M5 9a7 7 0 0 1 14 0 M2 9a10 10 0 0 1 20 0 M8 9a4 4 0 0 1 8 0 M12 10v11 M8 21h8',
+ 'M12 2l2.5 7.5L22 12l-7.5 2.5L12 22l-2.5-7.5L2 12l7.5-2.5z',
+ 'M3 5h18v5H3z M3 14h18v5H3z M7 7.5h.01 M7 16.5h.01 M17 10v4 M7 10v4',
+];
+---
+<svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d={paths[kind % paths.length]} /></svg>

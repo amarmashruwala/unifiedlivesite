@@ -1,0 +1,112 @@
+---
+// Original editorial illustrations. These are service concepts, not product UI.
+interface Props { scene: string; }
+const { scene } = Astro.props;
+---
+<g class="diagram-scene" aria-hidden="true" stroke-linecap="round" stroke-linejoin="round">
+  {scene === 'av-spaces' && <>
+    <rect x="48" y="8" width="144" height="86" rx="5" fill="var(--ice)"/>
+    <rect x="56" y="16" width="128" height="70" fill="var(--sky)"/>
+    <path d="M112 35l30 17-30 17z" fill="var(--petrol)"/>
+    {[12,208].map(x => <g><rect x={x} y="42" width="20" height="78" rx="3" fill="var(--ice)"/><circle cx={x+10} cy="62" r="5" fill="var(--petrol)"/><circle cx={x+10} cy="94" r="7" fill="var(--petrol)"/></g>)}
+    <path d="M120 94v17m-25 0h50M38 136h164" stroke="var(--ice)" stroke-width="5"/>
+    <rect x="108" y="91" width="24" height="27" rx="12" fill="var(--art-accent)" stroke="var(--petrol)" stroke-width="2"/>
+    <path d="M102 108a18 18 0 0 0 36 0m-18 18v10" stroke="var(--art-accent)" stroke-width="4" fill="none"/>
+  </>}
+  {scene === 'conference' && <>
+    <rect x="24" y="12" width="192" height="108" rx="8" fill="var(--ice)"/>
+    <rect x="34" y="22" width="172" height="88" rx="3" fill="var(--sky)"/>
+    {[78,162].map(x => <g><circle cx={x} cy="52" r="16" fill="var(--petrol)"/><path d={`M${x-27} 100V88a27 27 0 0 1 54 0v12`} fill="var(--petrol)"/></g>)}
+    <path d="M10 122h220l-14 14H24z" fill="var(--ice)"/>
+    <path d="M120 38v48" stroke="var(--ice)" stroke-width="3"/>
+    <circle cx="120" cy="117" r="3" fill="var(--petrol)"/>
+  </>}
+  {scene === 'live-studio' && <>
+    <rect x="66" y="8" width="150" height="98" rx="5" fill="var(--ice)"/>
+    <rect x="74" y="16" width="134" height="82" fill="var(--petrol)"/>
+    <path d="M75 17h24L86 97H75m132-80h-24l13 80h11" fill="var(--sky)"/>
+    <circle cx="141" cy="42" r="12" fill="var(--art-accent)"/><path d="M120 89V72a21 21 0 0 1 42 0v17" fill="var(--art-accent)"/>
+    <rect x="12" y="57" width="68" height="42" rx="5" fill="var(--petrol)" stroke="var(--ice)" stroke-width="3"/>
+    <path d="M80 68l20-10v40L80 88" fill="var(--sky)"/><path d="M34 56v-9h27v9M44 100v35m-17 0 17-25 17 25" stroke="var(--ice)" stroke-width="4" fill="none"/>
+    <path d="M105 110h111l13 27H92z" fill="var(--sky)"/>
+    {[121,147,173,199].map(x => <g><path d={`M${x} 116v14`} stroke="var(--petrol)" stroke-width="2"/><path d={`M${x-5} ${x===147 ? 120 : 126}h10`} stroke="var(--petrol)" stroke-width="4"/></g>)}
+  </>}
+  {scene === 'ai-audience' && <>
+    <path d="M24 8h144v57h-42l-24 18V65H24z" fill="var(--art-accent)"/>
+    <path d="M51 49l11-28 11 28m-18-9h15m17-19h15m-7 0v28m-8 0h15" fill="none" stroke="var(--petrol)" stroke-width="4"/>
+    <path d="M116 29v15m9-22v29m9-22v15" stroke="var(--petrol)" stroke-width="3"/>
+    <path d="M171 38h51v39h-13v14l-18-14h-20" fill="var(--sky)"/>
+    {[185,197,209].map(x => <circle cx={x} cy="57" r="3" fill="var(--petrol)"/>)}
+    {[{x:50,y:94,c:'var(--ice)'},{x:120,y:101,c:'var(--sky)'},{x:190,y:104,c:'var(--ice)'}].map(p => <g><circle cx={p.x} cy={p.y} r="13" fill={p.c}/><path d={`M${p.x-23} 142v-13a23 23 0 0 1 46 0v13`} fill={p.c}/></g>)}
+  </>}
+  {scene === 'room' && <>
+    <rect x="60" y="8" width="120" height="72" rx="5" fill="var(--ice)"/>
+    <rect x="68" y="16" width="104" height="56" rx="2" fill="var(--sky)"/>
+    <circle cx="120" cy="33" r="10" fill="var(--petrol)"/><path d="M99 64v-8a21 21 0 0 1 42 0v8" fill="var(--petrol)"/>
+    <path d="M120 80v13M92 93h56" stroke="var(--ice)" stroke-width="5"/>
+    <path d="M47 111h146l-20 27H67z" fill="var(--art-accent)"/>
+    {[40,200].map(x => <g><circle cx={x} cy="78" r="15" fill="var(--sky)"/><path d={`M${x-20} 127v-18a20 20 0 0 1 40 0v18`} fill="var(--ice)"/></g>)}
+  </>}
+  {scene === 'remote' && <>
+    <rect x="30" y="14" width="180" height="106" rx="8" fill="var(--ice)"/>
+    <rect x="40" y="24" width="160" height="86" rx="3" fill="var(--sky)"/>
+    <path d="M16 122h208l-12 13H28z" fill="var(--ice)"/>
+    <circle cx="120" cy="53" r="19" fill="var(--petrol)"/><path d="M84 105V92a36 36 0 0 1 72 0v13" fill="var(--petrol)"/>
+    <path d="M167 45q16 12 0 24m12-32q25 20 0 40" stroke="var(--petrol)" stroke-width="4" fill="none"/>
+  </>}
+  {scene === 'unified' && <>
+    <circle cx="120" cy="72" r="68" fill="var(--art-accent)"/>
+    <path d="M82 44v33c0 22 16 39 38 39s38-17 38-39V44" stroke="var(--petrol)" stroke-width="9" fill="none"/>
+    <circle cx="120" cy="65" r="11" fill="var(--sky)"/>
+  </>}
+  {['reach','distribute','reuse'].includes(scene) && <>
+    <rect x="24" y="12" width="152" height="98" rx="6" fill="var(--ice)" stroke="var(--petrol)" stroke-width="3"/>
+    <rect x="34" y="22" width="132" height="78" rx="2" fill="var(--sky)"/>
+    <path d="M88 42l34 20-34 20z" fill="var(--petrol)"/>
+    <path d="M100 110v18m-28 0h56" stroke="var(--ice)" stroke-width="6"/>
+    <rect x="156" y="56" width="56" height="84" rx="7" fill="var(--petrol)" stroke="var(--paper)" stroke-width="3"/>
+    <rect x="163" y="65" width="42" height="59" rx="2" fill="var(--art-accent)"/><path d="M177 82l16 12-16 12z" fill="var(--petrol)"/>
+    {scene === 'distribute' && <path d="M188 12q25 0 25 25m-25-13q12 0 12 13" stroke="currentColor" stroke-width="4" fill="none"/>}
+  </>}
+  {scene === 'capture' && <>
+    <path d="M77 101v33m-19 0 19-33 19 33" stroke="currentColor" stroke-width="5" fill="none"/>
+    <rect x="18" y="38" width="112" height="64" rx="6" fill="var(--petrol)" stroke="var(--ice)" stroke-width="3"/>
+    <circle cx="48" cy="20" r="17" fill="var(--ice)" stroke="var(--petrol)" stroke-width="2"/><circle cx="91" cy="20" r="17" fill="var(--sky)" stroke="var(--petrol)" stroke-width="2"/>
+    <circle cx="48" cy="20" r="6" fill="var(--petrol)"/><circle cx="91" cy="20" r="6" fill="var(--petrol)"/>
+    <path d="M130 57l26-14v54l-26-14" fill="var(--art-accent)"/>
+    <rect x="170" y="36" width="52" height="86" rx="7" fill="var(--ice)"/>
+    <rect x="176" y="43" width="40" height="66" rx="2" fill="var(--sky)"/>
+    <circle cx="196" cy="66" r="9" fill="var(--petrol)"/><path d="M181 97V87a15 15 0 0 1 30 0v10" fill="var(--petrol)"/>
+  </>}
+  {scene === 'stage' && <>
+    <path d="M24 17h192v108H24z" fill="var(--ice)" stroke="var(--petrol)" stroke-width="3"/>
+    <path d="M34 27h172v88H34z" fill="var(--petrol)"/>
+    <path d="M34 27h30l-12 88H34m172-88h-30l12 88h18" fill="var(--sky)"/>
+    <circle cx="120" cy="55" r="14" fill="var(--art-accent)"/><path d="M95 108V88a25 25 0 0 1 50 0v20" fill="var(--art-accent)"/>
+    <path d="M12 126h216l-12 12H24z" fill="var(--ice)"/>
+  </>}
+  {scene === 'people' && <>
+    {[{x:50,y:42,s:.85,c:'var(--sky)'},{x:190,y:42,s:.85,c:'var(--ice)'},{x:120,y:33,s:1.15,c:'var(--art-accent)'}].map(p => <g transform={`translate(${p.x} ${p.y}) scale(${p.s})`}><circle r="20" fill={p.c} stroke="var(--petrol)" stroke-width="2"/><path d="M-34 87V57a34 34 0 0 1 68 0v30z" fill={p.c} stroke="var(--petrol)" stroke-width="2"/><path d="M-7-1q7 9 14 0" stroke="var(--petrol)" stroke-width="3" fill="none"/></g>)}
+  </>}
+  {scene === 'conversation' && <>
+    <path d="M78 52h144v63h-23v22l-28-22H78z" fill="var(--sky)"/>
+    <path d="M18 10h152v76H70l-26 23V86H18z" fill="var(--art-accent)" stroke="var(--petrol)" stroke-width="2"/>
+    <path d="M83 35a12 12 0 0 1 24 0c0 10-12 8-12 18m0 12v1" stroke="var(--petrol)" stroke-width="5" fill="none"/>
+    {[164,182,200].map(x => <circle cx={x} cy="99" r="4" fill="var(--petrol)"/>)}
+  </>}
+  {scene === 'library' && <>
+    <path d="M26 24h70l14 16h104v96H26z" fill="var(--sky)"/>
+    <rect x="47" y="8" width="138" height="100" rx="4" fill="var(--ice)" transform="rotate(7 116 58)"/>
+    <rect x="44" y="24" width="140" height="86" rx="4" fill="var(--paper)" transform="rotate(-6 114 67)"/>
+    <path d="M111 40l30 18-30 18z" fill="var(--petrol)"/>
+    <path d="M16 68h208l-13 70H29z" fill="var(--art-accent)" stroke="var(--petrol)" stroke-width="2"/>
+    <path d="M97 91h46" stroke="var(--petrol)" stroke-width="5"/>
+  </>}
+  {scene === 'prepare' && <>
+    <rect x="30" y="16" width="180" height="112" rx="6" fill="var(--ice)" stroke="var(--petrol)" stroke-width="3"/>
+    <rect x="42" y="35" width="156" height="74" fill="var(--sky)"/>
+    {[55,87,119,151,183].map(x => <g><rect x={x-5} y="23" width="10" height="6" fill="var(--petrol)"/><rect x={x-5} y="115" width="10" height="6" fill="var(--petrol)"/></g>)}
+    <path d="M105 49l36 23-36 23z" fill="var(--petrol)"/>
+    <circle cx="197" cy="114" r="25" fill="var(--art-accent)" stroke="var(--petrol)" stroke-width="2"/><path d="M185 114l8 8 15-18" stroke="var(--petrol)" stroke-width="5" fill="none"/>
+  </>}
+</g>

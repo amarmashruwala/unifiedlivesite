@@ -1,0 +1,28 @@
+{
+  "name": "unified-live",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev --host 127.0.0.1",
+    "check": "astro check",
+    "build": "astro build",
+    "build:release": "node scripts/build-release.mjs",
+    "preview": "astro preview --host 127.0.0.1",
+    "test": "playwright test"
+  },
+  "dependencies": {
+    "astro": "^7.4.2",
+    "marked": "^17.0.0",
+    "yaml": "^2.8.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.6",
+    "@axe-core/playwright": "^4.11.0",
+    "@playwright/test": "^1.58.0",
+    "@types/node": "^25.0.0",
+    "lighthouse": "^13.0.0",
+    "sharp": "^0.35.5",
+    "typescript": "^5.9.0"
+  }
+}

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 394 72" role="img" aria-labelledby="title desc">
+  <title id="title">UnifiedLive</title>
+  <desc id="desc">The UnifiedLive wordmark beside a U shaped connection mark, for light backgrounds.</desc>
+  <rect width="394" height="72" fill="#F5F6F2"/>
+  <g transform="translate(12 12)" fill="none">
+    <path d="M8 8v16c0 9 7 16 16 16s16-7 16-16V8" stroke="#132522" stroke-width="6" stroke-linecap="round"/>
+    <circle cx="24" cy="17" r="5" fill="#85C9DF"/>
+  </g>
+  <text x="75" y="48" fill="#132522" font-family="Arial, Helvetica, sans-serif" font-size="43" font-weight="700" letter-spacing="-2.5">unified<tspan font-weight="400">live</tspan><tspan fill="#132522">.</tspan></text>
+</svg>

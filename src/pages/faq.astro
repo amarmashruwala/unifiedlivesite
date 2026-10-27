@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import CTA from '../components/CTA.astro';
+import { content as c } from '../data/content';
+const schema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: c.faqs.map(f => ({ '@type': 'Question', name: f.question, acceptedAnswer: { '@type': 'Answer', text: f.answer } })) };
+---
+<Layout><script slot="head" type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\\u003c')}/><PageIntro title="Before you go live." description="Explore how we work, what we connect, and where we can help."/><section class="section container faq-list">{c.faqs.map(f => <details><summary>{f.question}<span aria-hidden="true">+</span></summary><p>{f.answer}</p></details>)}</section><CTA/></Layout>

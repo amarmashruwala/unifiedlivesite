@@ -1,0 +1,5 @@
+---
+import { content } from '../data/content';
+import Arrow from './Arrow.astro';
+---
+<div class="service-index">{content.services.map(s => <article><a href={`/services#${s.id}`}><h3>{s.name}</h3><p>{s.headline}</p><Arrow/></a></article>)}</div>

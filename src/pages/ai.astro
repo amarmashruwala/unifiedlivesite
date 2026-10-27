@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { marked } from 'marked';
+import { frontmatter, markdownBody, rawMarkdown } from '../lib/markdown';
+import { content } from '../data/content';
+const rendered = await marked.parse(markdownBody, { gfm: true });
+---
+<Layout><div class="container ai-shell"><div class="ai-top"><div><h1>UnifiedLive, in Markdown.</h1><p>The same company. A format built for extraction and understanding.</p></div><span class="document-tag">Markdown document</span></div><div class="ai-toolbar"><span>Content updated {content.lastUpdated}</span><div><button type="button" class="button small dark" id="copy-markdown" hidden>Copy Markdown</button><a class="button small outline" href="/ai-agent-content.md" download="unifiedlive.md">Download .md ↓</a><a class="text-link" href="/llms.txt">llms.txt ↗</a></div></div><p id="copy-status" role="status" aria-live="polite"></p><details class="raw-details" id="raw-details"><summary>View / select raw Markdown</summary><label class="sr-only" for="raw-markdown">Raw Markdown</label><textarea id="raw-markdown" readonly rows="16" spellcheck="false">{rawMarkdown}</textarea></details><article class="markdown-document"><div class="frontmatter"><span class="document-label">Document front matter</span><pre>{`---\n${frontmatter}---`}</pre></div><div class="prose" set:html={rendered}/></article></div>
+<script>
+const copy = document.querySelector<HTMLButtonElement>('#copy-markdown')!;
+copy.hidden = false;
+copy.addEventListener('click', async () => {
+ const raw = document.querySelector<HTMLTextAreaElement>('#raw-markdown')!;
+ const status = document.querySelector('#copy-status')!;
+ try { await navigator.clipboard.writeText(raw.value); status.textContent = 'Markdown copied to clipboard.'; }
+ catch { document.querySelector<HTMLDetailsElement>('#raw-details')!.open = true; raw.focus(); raw.select(); status.textContent = 'Clipboard unavailable. Raw Markdown is selected; use your device’s copy command.'; }
+});
+</script></Layout>

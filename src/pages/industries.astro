@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import CTA from '../components/CTA.astro';
+import { content as c } from '../data/content';
+---
+<Layout><PageIntro title="Your world, connected." description="Every industry has a different story to tell. We connect the people, places, and platforms that help you tell yours." action={{label:'Find your industry',href:'#industry-index'}}/>
+<section class="section container"><div class="market-tags">{c.markets.map(m => <span>{m}</span>)}</div><nav id="industry-index" class="industry-jump" aria-label="Industry sections">{c.industries.map(ind => <a href={`#${ind.name.toLowerCase().replaceAll(' ','-')}`}>{ind.name}</a>)}</nav><div class="industry-grid">{c.industries.map(ind => <article class="industry-card" id={ind.name.toLowerCase().replaceAll(' ','-')}><h2>{ind.name}</h2><ul class="capability-list">{ind.useCases.map(u => <li>{u}</li>)}</ul><a class="text-link" href={`/contact?industry=${encodeURIComponent(ind.name)}`}>Discuss your project <span aria-hidden="true">↗</span></a></article>)}</div></section><CTA/></Layout>

@@ -1,0 +1,8 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import CTA from '../components/CTA.astro';
+import { content as c } from '../data/content';
+---
+<Layout><PageIntro title="Sydney & Mumbai." description="With a presence in Sydney and Mumbai, we connect local understanding with an integrated approach to media technology." action={{label:'Shape your project',href:'/contact'}}/>
+<section class="section container"><div class="location-grid">{c.locations.map(l => <article class="location-card full"><span class="location-code">{l.label}</span><div><p class="location-country">{l.country}</p><h2>{l.city}</h2><p>{l.description}</p></div></article>)}</div><div class="partnership-strip"><h2>Expand what’s possible.</h2><p>{c.partnerships.description}</p><a class="text-link" href="/partnerships">Explore partnerships ↗</a></div></section><CTA/></Layout>

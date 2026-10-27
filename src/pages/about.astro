@@ -1,0 +1,10 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import SignalDiagram from '../components/SignalDiagram.astro';
+import CTA from '../components/CTA.astro';
+import { content as c } from '../data/content';
+---
+<Layout><PageIntro title="Built to connect." description="We bring audiovisual systems, communications, production, and audiences together—through one dependable delivery model." action={{label:'How we work',href:'#how-we-work'}}/>
+<section class="section container about-grid"><div><h2>Built around the outcome you need.</h2><p class="large-copy">{c.about.intro}</p><p>We combine commercial platforms, cloud services, open-source applications, and custom workflows. The starting point is your objective.</p></div><div class="dark-panel"><SignalDiagram/></div></section>
+<section id="how-we-work" class="section muted-section"><div class="container"><h2>A clear path from idea to experience.</h2><ol class="approach-list">{c.about.approach.map(a => <li><h3>{a.title}</h3><p>{a.description}</p></li>)}</ol></div></section><section class="section container"><div class="split-heading"><div><h2>The full picture.<br/>One partner.</h2></div><ul class="reason-list">{c.about.reasons.map(r => <li><span aria-hidden="true">↗</span>{r}</li>)}</ul></div></section><CTA/></Layout>

@@ -1,0 +1,7 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageIntro from '../components/PageIntro.astro';
+import { content as c } from '../data/content';
+---
+<Layout><PageIntro title="Better together." description={c.partnerships.description} action={{label:'Discuss a partnership',href:'/contact?service=Partnership%20enquiry'}}/>
+<section class="section container partnership-grid"><div><h2>Different strengths.<br/>Shared possibilities.</h2><ul class="capability-list">{c.partnerships.partners.map(p => <li>{p}</li>)}</ul></div><div class="partnership-panel"><h2>Find our common ground.</h2><ul class="capability-list">{c.partnerships.models.map(m => <li>{m}</li>)}</ul><a class="button dark" href="/contact?service=Partnership%20enquiry">Discuss a partnership <span aria-hidden="true">↗</span></a></div></section><section class="section muted-section"><div class="container"><h2>One partner for integrated delivery.</h2><div class="partner-capabilities">{c.services.map(s => <a href={`/services#${s.id}`}>{s.name}<span aria-hidden="true">↗</span></a>)}</div></div></section></Layout>
